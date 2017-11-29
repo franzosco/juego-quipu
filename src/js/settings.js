@@ -4,19 +4,27 @@ const settings = {
   imagenes: [
     { 
       nombre: "welcome", 
-      recurso: "assets/images/welcome.jpeg" 
+      recurso: "assets/images/welcome.jpg" 
     },
     { 
       nombre: "logo-unamba", 
       recurso: "assets/images/logo-unamba.png" 
     },
     { 
-      nombre: "calcular", 
-      recurso: "assets/buttons/calcular.png" 
+      nombre: "btn_nivel_1", 
+      recurso: "assets/buttons/btn_nivel_1.png" 
     },
     { 
-      nombre: "iniciar", 
-      recurso: "assets/buttons/iniciar.png" 
+      nombre: "btn_nivel_2", 
+      recurso: "assets/buttons/btn_nivel_2.png" 
+    },
+    { 
+      nombre: "btn_nivel_3", 
+      recurso: "assets/buttons/btn_nivel_3.png" 
+    },
+    { 
+      nombre: "calcular", 
+      recurso: "assets/buttons/calcular.png" 
     },
     { 
       nombre: "siguiente", 
@@ -28,11 +36,11 @@ const settings = {
     },
     {
       nombre: "ecenario1",
-      recurso: "assets/images/ecenario1.png"
+      recurso: "assets/images/ecenario1.jpg"
     },
     {
       nombre: "ecenario2",
-      recurso: "assets/images/ecenario2.png"
+      recurso: "assets/images/ecenario2.jpg"
     },
     {
       nombre: "ecenario3",
@@ -57,6 +65,10 @@ const settings = {
     { 
       nombre: "controles", 
       recurso: "assets/images/controles.png" 
+    },
+    { 
+      nombre: "marco", 
+      recurso: "assets/images/marco.png" 
     },
   ],
 
@@ -210,6 +222,10 @@ const settings = {
     { 
       nombre: "correcto", 
       recurso: "assets/audio/correcto.ogg" 
+    },
+    { 
+      nombre: "error", 
+      recurso: "assets/audio/error.ogg" 
     },
     { 
       nombre: "bub", 

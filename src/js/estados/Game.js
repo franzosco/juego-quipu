@@ -2,32 +2,17 @@ import settings from '../settings'
 
 class Game {
   constructor(nivel=1) {
-
-    if (nivel === 1) {
-      this.figuras = settings.figuras.frutas
-      this.pregunta = [0]
-      this.nudos = [[]]
-
-    } else if (nivel === 2) {
-      this.figuras = settings.figuras.geometricas
-      this.pregunta = [0, 0]
-      this.nudos = [[], []]
-
-    } else {
-      this.figuras = settings.figuras.animales
-      this.pregunta = [0, 0, 0]
-      this.nudos = [[], [], []]
-
-    }
-
-    this.figuras_array = [
-      [-1, -1, -1, -1],
-      [-1, -1, -1, -1],
-      [-1, -1, -1, -1],
-      [-1, -1, -1, -1],
-    ]
     this.nivel = nivel
-    this.tween = null
+    this.figuras = nivel === 1 ?
+                  settings.figuras.frutas : nivel === 2 ?
+                  settings.figuras.geometricas : settings.figuras.animales
+
+    this.pregunta = new Array(nivel).fill({})
+    this.respuesta = new Array(nivel).fill({})
+
+    this.cuerdas = []
+    this.figuras_soltadas = []
+    this.figuras_array = new Array(4).fill(new Array(4))
 
     this.crearCabecera = this.crearCabecera.bind(this)
     this.crearPregunta = this.crearPregunta.bind(this)
@@ -53,49 +38,65 @@ class Game {
   crearPregunta() {
     // calculamos el array de preguntas
     let aleatorio, contador = 0
-    for (let i = 0; i < this.pregunta.length; i++) {
+
+    this.pregunta.forEach(item => {
       if (contador <= 9) {
         aleatorio = this.getRandomInt(0, 9)
 
         if (aleatorio + contador > 9) {
-          break
+          item.total = 0
+
         } else {
-          this.pregunta[i] = { total: aleatorio }
+          item.total = aleatorio
         }
+
         contador += aleatorio
+
       } else {
-        break
+        item.total = 0
       }
-    }
+    })
 
     // llenamos al azar las figuras de respuesta en la matriz de figuras
     let randi, randj
-    for (let i = 0; i < this.pregunta.length; i++) {
-      this.pregunta[i] = {
-        total: this.pregunta[i].total,
-        nombre: this.figuras[this.getRandomInt(0, this.figuras.length - 1)].nombre
-      }
+    this.pregunta.forEach(item => {
+      item.nombre = this.figuras[this.getRandomInt(0, this.figuras.length - 1)].nombre
 
-      for (let j = 0; j < this.pregunta[i].total ; j++) {
+      for (let j = 0; j < item.total; j++) {
         // forzamos llenado
         while (true) {
           randi = this.getRandomInt(0, 3)
           randj = this.getRandomInt(0, 3)
 
-          if (this.figuras_array[randi][randj] === -1) {
-            this.figuras_array[randi][randj] = this.pregunta[i].nombre
+          if (!this.figuras_array[randi][randj]) {
+            this.figuras_array[randi][randj] = item.nombre
             break
           }
         }
       }
-    }
+    })
+
+    console.log(this.figuras_array)
 
     // llenamos los espacios de la matriz de figuras que no tienen
     // una figura asignada
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
-        if (this.figuras_array[i][j] === -1) {
-          this.figuras_array[i][j] = this.figuras[this.getRandomInt(0, this.figuras.length - 1)].nombre
+        while(true) {
+          if (!this.figuras_array[i][j]) {
+            aleatorio = this.getRandomInt(0, this.figuras.length - 1)
+
+            if (this.pregunta.findIndex(item => 
+              item.nombre === this.figuras[aleatorio].nombre) === -1
+            ) {
+              this.figuras_array[i][j] = this.figuras[aleatorio].nombre
+              break
+            } else {
+              break
+            }
+          } else {
+            break
+          }
         }
       }
     }
@@ -106,12 +107,17 @@ class Game {
 
     this.game.add.sprite(0, 120, "cuerda_principal")
 
-    for (let i = 0; i < this.pregunta.length; i++) {
-      sprite = this.game.add.sprite(400 / (this.pregunta.length + 1), 60, this.pregunta[i].nombre)
+    this.incremento = this.pregunta.length === 1 ?
+                210 : this.pregunta.length === 2 ?
+                150 : this.pregunta.length === 3 ?
+                110 : 90
+
+    for (let i = 1; i <= this.pregunta.length; i++) {
+      sprite = this.game.add.sprite(400 - this.incremento * i, 50, this.pregunta[i - 1].nombre)
       sprite.scale.setTo(.6, .6)
 
-      sprite = this.game.add.sprite(0, 120, "cuerda_amarillo")
-      sprite.frame = 2
+      this.cuerdas[i - 1] = this.game.add.sprite(360 - this.incremento * i, 130, "cuerda_amarillo")
+      this.cuerdas[i - 1].frame = 0
     }
   }
 
@@ -122,8 +128,8 @@ class Game {
     {
       for (let j = 0; j < 4; j++)
       {
-        x = 400 + 100 * j;
-        y = 140 + 120 * i;
+        x = 400 + 100 * j
+        y = 140 + 120 * i
 
         sprite = this.game.add.sprite(x, y, this.figuras_array[i][j])
         sprite.scale.setTo(.6, .6)
@@ -138,11 +144,42 @@ class Game {
     }
   }
 
-  soltarFigura() {
-    let nudo
+  crearPopup() {
+    let sprite, anterior, incremento = 0
 
+    this.popup = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "popup")
+
+
+    let btnContinuar = this.game.make.button(-20, 80, "siguiente", this.onContinuar)
+    btnContinuar.input.priorityID = 1
+    btnContinuar.scale.setTo(.4, .4)
+
+    this.popup.addChild(btnContinuar)
+
+    this.popup.anchor.set(0.5)
+    this.popup.scale.set(0.1)
+    this.popup.visible = false
+
+    // audio de error
+    this.audio_error = this.game.add.audio("error")
+    this.audio_correcto = this.game.add.audio("correcto")
+  }
+
+  soltarFigura() {
     for (let i = 0; i < this.pregunta.length; i++) {
-      
+      if (
+        390 - this.incremento * (i + 1) <= arguments[0].position.x &&
+        410 - this.incremento * (i + 1) >= arguments[0].position.x &&
+        arguments[0].key === this.pregunta[i].nombre
+      ) {
+        arguments[0].visible = false
+        this.figuras_soltadas.push(arguments[0])
+        
+        this.respuesta[i] += 1
+        this.cuerdas[i].frame = this.respuesta[i]
+
+        this.numeros.play(this.respuesta[i].toString())
+      }
     }
 
     arguments[0].position.x = arguments[0].initPosition.x;
@@ -150,39 +187,70 @@ class Game {
   }
 
   onCalcular() {
-    if ((this.tween !== null && this.tween.isRunning ) || this.popup.scale.x === 1) {
+    if (this.popup.visible) {
       return
     }
 
     this.popup.visible = true
     this.game.world.bringToTop(this.popup)
 
-    this.tween = this.game.add.tween(this.popup.scale)
-      .to( { x: .9, y: .8 }, 1000, Phaser.Easing.Elastic.Out, true)
+    this.game.add.tween(this.popup.scale)
+      .to( { x: 1, y: 1 }, 1000, Phaser.Easing.Elastic.Out, true)
+
+    this.continuar = true
+    for (let i = 0; i < this.pregunta.length; i++) {
+      if (this.pregunta[i].total !== this.respuesta[i]) {
+        this.continuar = false
+        break;
+      }
+    }
+
+    if (this.continuar) {
+      this.audio_correcto.play()
+    } else {
+      this.audio_error.play()
+    }
   }
 
   onContinuar() {
-    if (this.nivel === 1) {
-      this.pregunta = [0]
-      this.nudos = [[]]
+    if (this.continuar) {
+      if (this.nivel === 1) {
+        this.pregunta = [0]
+        this.respuesta = [0]
 
-    } else if (this.nivel === 2) {
-      this.pregunta = [0, 0]
-      this.nudos = [[], []]
+      } else if (this.nivel === 2) {
+        this.pregunta = [0, 0]
+        this.respuesta = [0, 0]
+
+      } else {
+        this.pregunta = [0, 0, 0]
+        this.respuesta = [0, 0, 0]
+      }
+
+      this.figuras_array = [
+        [-1, -1, -1, -1],
+        [-1, -1, -1, -1],
+        [-1, -1, -1, -1],
+        [-1, -1, -1, -1],
+      ]
+
+      this.game.state.start(`Nivel ${this.nivel}`, true, false)
 
     } else {
-      this.pregunta = [0, 0, 0]
-      this.nudos = [[], [], []]
+      this.respuesta = new Array(this.nivel).fill(0)
+
+      this.popup.anchor.set(0.5)
+      this.popup.scale.set(0.1)
+      this.popup.visible = false
+
+      this.cuerdas.forEach(cuerda => {
+        cuerda.frame = 0
+      })
+
+      this.figuras_soltadas.forEach(figura => {
+        figura.visible = true
+      })
     }
-
-    this.figuras_array = [
-      [-1, -1, -1, -1],
-      [-1, -1, -1, -1],
-      [-1, -1, -1, -1],
-      [-1, -1, -1, -1],
-    ]
-
-    this.game.state.start('Game', true, false)
   }
 
   create() {
@@ -200,6 +268,7 @@ class Game {
     this.crearCabecera()
     this.crearQuipu()
     this.crearFiguras()
+    this.crearPopup()
   }
 
   update() {

@@ -34,7 +34,7 @@ class Preload {
     )
 
     cuerdas.forEach(cuerda => 
-      this.load.spritesheet(cuerda.nombre, cuerda.recurso, 37, 400, 18)
+      this.load.spritesheet(cuerda.nombre, cuerda.recurso, 150, 500)
     )
 
     audios.forEach(audio =>
