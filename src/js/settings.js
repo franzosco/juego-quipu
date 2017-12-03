@@ -63,10 +63,6 @@ const settings = {
       recurso: "assets/sprites/operacion/incognita.png" 
     },
     { 
-      nombre: "controles", 
-      recurso: "assets/images/controles.png" 
-    },
-    { 
       nombre: "marco", 
       recurso: "assets/images/marco.png" 
     },
@@ -94,10 +90,6 @@ const settings = {
   figuras: {
     
     frutas: [
-      { 
-        nombre: "durazno", 
-        recurso: "assets/sprites/frutas/durazno.png" 
-      },
       { 
         nombre: "freza", 
         recurso: "assets/sprites/frutas/freza.png" 
