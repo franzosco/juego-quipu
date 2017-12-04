@@ -2,11 +2,12 @@
   "name": "juego-quipu",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "dev": "webpack-dev-server",
     "prod": "./node_modules/.bin/webpack -p",
-    "transpile": "./node_modules/.bin/webpack -d"
+    "transpile": "./node_modules/.bin/webpack -d",
+    "start": "./node_modules/.bin/webpack -p && ./node_modules/.bin/electron ."
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,10 @@
     "babel-preset-stage-2": "^6.24.1",
     "copy-webpack-plugin": "^4.2.3",
     "css-loader": "^0.28.7",
+    "electron": "^1.7.9",
+    "electron-prebuilt": "^1.4.13",
+    "electron-windows-installer": "^1.7.8",
+    "electron-winstaller": "^2.6.3",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",

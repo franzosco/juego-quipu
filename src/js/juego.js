@@ -2,7 +2,7 @@ import { Boot, Preload, MainMenu, Game } from './estados'
 import 'css/main.scss'
 
 
-window.onload = () => {
+window.addEventListener('DOMContentLoaded',  () => {
   let game = new Phaser.Game(800, 600, Phaser.AUTO, 'app')
 
   game.state.add('Boot', new Boot())
@@ -13,4 +13,5 @@ window.onload = () => {
   game.state.add('Nivel 3', new Game(3))
 
   game.state.start('Boot')
-}
+
+})

@@ -56,10 +56,6 @@ const config = {
       }
     ]
   },
-  target: 'web',
-  externals: {
-    'graphiql': "var GraphiQL"
-  },
   plugins: [
     new HtmlWebpackPlugin({
       inject: false,
@@ -78,9 +74,9 @@ const config = {
         to: 'js/'
       },
       {
-        from: './src/assets/*',
+        from: './src/assets',
         to: 'assets/'
-      },
+      }
     ],{
       ignore: [
         '*.txt',
