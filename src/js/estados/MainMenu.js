@@ -12,11 +12,13 @@ class MainMenu {
 
   create() {
     // Imagen de bienvenida
-    let background = this.game.add.image(0, 0, "welcome")
+    let background = this.game.add.image(0, 0, "bienvenida")
     background.height = this.game.height
     background.width = this.game.width
 
     this.game.add.image(5, 5, "logo-unamba")
+    this.game.add.image(700, 5, "logo-educacion")
+
     this.menu = this.game.add.sprite(250, 150, "marco")
     this.menu.scale.setTo(.8, .8)
 

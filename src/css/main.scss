@@ -10,11 +10,12 @@ body {
 
 canvas {
   border: 5px solid #9c27b0;
-  box-shadow: 0px 0px 8px 5px #9c27b070;
+  box-shadow: 0 0 3px 1px #8ba2c0;
 }
 
 #app {
   display: flex;
   justify-content: center;
+  margin-top: 12px;
   vertical-align: middle;
 }

@@ -62,7 +62,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      inject: true,
+      inject: false,
       chunks: ['js/juego'],
       filename: 'index.html',
       template: 'src/index.html'
@@ -76,6 +76,10 @@ const config = {
       {
         from: './node_modules/phaser-ce/build/phaser.map',
         to: 'js/'
+      },
+      {
+        from: './src/assets/*',
+        to: 'assets/'
       },
     ],{
       ignore: [

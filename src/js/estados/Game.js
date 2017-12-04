@@ -1,5 +1,28 @@
 import settings from '../settings'
 
+
+let niveles = {
+  "1": [
+    { nombre: "manzana", color: "naranja" },
+    { nombre: "naranja", color: "naranja" },
+    { nombre: "platano", color: "amarillo" },
+    { nombre: "pera", color: "verde" },
+  ],
+  "2": [
+    { nombre: "cuadrado", color: "naranja" },
+    { nombre: "triangulo", color: "amarillo" },
+    { nombre: "circulo", color: "azul" },
+    { nombre: "rectangulo", color: "verde" },
+  ],
+  "3": [
+    { nombre: "conejo", color: "naranja" },
+    { nombre: "gato", color: "azul" },
+    { nombre: "perro", color: "verde" },
+    { nombre: "pato", color: "amarillo" },
+  ]
+}
+
+
 class Game {
   constructor(nivel=1) {
     this.pregunta_nro = 1
@@ -44,30 +67,58 @@ class Game {
 
   crearPregunta() {
     // calculamos el array de preguntas
-    let aleatorio, contador = 0
+    let contador = 0
 
-    this.preguntas.forEach(pregunta => {
+    this.preguntas = this.preguntas.map((pregunta, index) => {
+      let total = 0
+
       if (contador < 9) {
-        aleatorio = this.getRandomInt(1, 5)
-        
-        pregunta.total = (aleatorio + contador) > 9 ? 0 : aleatorio
-        
-        contador += aleatorio
-      } else {
-        pregunta.total = 1
-      } 
+        if (contador >= 5) {
+          total = this.getRandomInt(1, 9 - contador)
+        } else {
+          total = this.getRandomInt(1, 5)
+        }
+        contador += total
+      }
+
+      return {
+        total: total
+      }
     })
 
 
     // llenamos al azar las figuras de respuesta en la matriz de figuras
-    let randi, randj
-    for (let i = 0; i < this.preguntas.length; i++) {
-      this.preguntas[i] = {
-        total: this.preguntas[i].total,
-        nombre: this.figuras[this.getRandomInt(0, this.figuras.length - 1)].nombre
+    let figura_temporal, agregados = []
+    
+    this.preguntas = this.preguntas.map((pregunta, index) => {
+      if  (this.nivel === 1) {
+        if (index === 0) {
+          figura_temporal = niveles[this.nivel][this.getRandomInt(0, 3)]
+        }
+
+      } else {
+        figura_temporal = niveles[this.nivel][this.getRandomInt(0, 3)]
+
+        while (true) {
+          if (agregados.findIndex(nombre => nombre === figura_temporal.nombre) === -1) {
+            agregados.push(figura_temporal.nombre)
+            
+            break
+          } else {
+            figura_temporal = niveles[this.nivel][this.getRandomInt(0, 3)]            
+          }
+        }
       }
 
-      for (let j = 0; j < this.preguntas[i].total ; j++) {
+      return {
+        ...pregunta,
+        ...figura_temporal
+      }
+    })
+
+    let randi, randj
+    for (let i = 0; i < this.preguntas.length; i++) {
+      for (let j = 0; j < this.preguntas[i]["total"]; j++) {
         // forzamos llenado
         while (true) {
           randi = this.getRandomInt(0, 3)
@@ -75,6 +126,7 @@ class Game {
 
           if (this.figuras_matriz[randi][randj] === -1) {
             this.figuras_matriz[randi][randj] = this.preguntas[i].nombre
+
             break
           }
         }
@@ -83,6 +135,7 @@ class Game {
 
     // llenamos los espacios de la matriz de figuras que no tienen
     // una figura asignada
+    let aleatorio
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         while(true) {
@@ -104,6 +157,7 @@ class Game {
 
   crearQuipu() {
     let sprite
+    const { manos } = settings.figuras
 
     this.game.add.sprite(0, 120, "cuerda_principal")
 
@@ -113,10 +167,13 @@ class Game {
                 110 : 90
 
     for (let i = 1; i <= this.preguntas.length; i++) {
-      sprite = this.game.add.sprite(400 - this.incremento * i, 50, this.preguntas[i - 1].nombre)
-      sprite.scale.setTo(.6, .6)
+      sprite = this.game.add.sprite(410 - this.incremento * i, 5, manos[this.preguntas[i - 1].total].nombre)
+      sprite.scale.setTo(.4, .4)
 
-      this.cuerdas[i - 1] = this.game.add.sprite(360 - this.incremento * i, 130, "cuerda_amarillo")
+      sprite = this.game.add.sprite(400 - this.incremento * i, 60, this.preguntas[i - 1].nombre)
+      sprite.scale.setTo(.5, .5)
+
+      this.cuerdas[i - 1] = this.game.add.sprite(360 - this.incremento * i, 130, `cuerda_${this.preguntas[i - 1].color}`)
       this.cuerdas[i - 1].frame = 0
     }
   }
@@ -146,8 +203,12 @@ class Game {
 
   crearPopup() {
     const { manos } = settings.figuras
+    const style = { 
+      font: "40px Arial", 
+      fill: "#004caa"
+    }
 
-    this.popup = this.game.add.sprite(200, 100, "popup")
+    this.popup = this.game.add.sprite(100, 100, "popup")
 
     let btnContinuar = this.game.make.button(180, 280, "siguiente", this.onContinuar)
     btnContinuar.input.priorityID = 1
@@ -155,20 +216,28 @@ class Game {
 
     this.popup.addChild(btnContinuar)
 
-    this.preguntas.forEach((pregunta, index)=> {
-      let sprite = this.game.add.sprite(60 + 80 * index, 80, pregunta.nombre)
-      sprite.scale.setTo(.5, .5)
+    let total = 0
+    this.preguntas.forEach((pregunta, index) => {
+      let sprite = this.game.add.sprite(60 + 50 * index, 80, pregunta.nombre)
+      sprite.scale.setTo(.3, .4)
 
-      let mano = this.game.add.sprite(60 + 80 * index, 160, manos[pregunta.total].nombre)
-      mano.scale.setTo(.5, .5)
+      let mano = this.game.add.sprite(60 + 50 * index, 140, manos[pregunta.total].nombre)
+      mano.scale.setTo(.3, .4)
+
+      let text = this.game.add.text(65 + 50 * index, 200, `${pregunta.total}`, style)
 
       this.popup.addChild(sprite)
       this.popup.addChild(mano)
+      this.popup.addChild(text)
+
+      total += pregunta.total
     })
 
-    let igual = this.game.add.sprite(60 + 80 * this.preguntas.length, 80, "igual")
-    igual.scale.setTo(.5, .5)
+    let igual = this.game.add.sprite(60 + 50 * this.preguntas.length, 85, "igual")
+    igual.scale.setTo(.4, .4)
     this.popup.addChild(igual)
+
+    this.popup.addChild(this.game.add.text(60 + 50 * this.preguntas.length + 50, 85, `${total}`, style))
 
     this.popup.scale.set(.1)
     this.popup.visible = false
@@ -181,8 +250,8 @@ class Game {
   soltarFigura() {
     for (let i = 0; i < this.preguntas.length; i++) {
       if (
-        390 - this.incremento * (i + 1) <= arguments[0].position.x &&
-        410 - this.incremento * (i + 1) >= arguments[0].position.x &&
+        380 - this.incremento * (i + 1) <= arguments[0].position.x &&
+        420 - this.incremento * (i + 1) >= arguments[0].position.x &&
         arguments[0].key === this.preguntas[i].nombre
       ) {
         arguments[0].visible = false
@@ -208,7 +277,7 @@ class Game {
     this.game.world.bringToTop(this.popup)
 
     this.game.add.tween(this.popup.scale)
-      .to( { x: 1, y: 1 }, 1000, Phaser.Easing.Elastic.Out, true)
+      .to( { x: 1.4, y: 1.2 }, 1000, Phaser.Easing.Elastic.Out, true)
 
     this.continuar = true
     for (let i = 0; i < this.preguntas.length; i++) {
@@ -276,7 +345,8 @@ class Game {
   }
 
   create() {
-    let background = this.game.add.image(0, 0, "ecenario1")
+    let background = this.game.add.image(0, 0, `ecenario${this.nivel}`)
+    
     background.height = this.game.height
     background.width = this.game.width
 

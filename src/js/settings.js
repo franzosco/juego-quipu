@@ -3,12 +3,16 @@
 const settings = {
   imagenes: [
     { 
-      nombre: "welcome", 
-      recurso: "assets/images/welcome.jpg" 
+      nombre: "bienvenida", 
+      recurso: "assets/images/bienvenida.jpeg" 
     },
     { 
       nombre: "logo-unamba", 
       recurso: "assets/images/logo-unamba.png" 
+    },
+    { 
+      nombre: "logo-educacion", 
+      recurso: "assets/images/logo-educacion.png" 
     },
     { 
       nombre: "btn_nivel_1", 
@@ -57,10 +61,6 @@ const settings = {
     { 
       nombre: "igual", 
       recurso: "assets/sprites/operacion/igual.png" 
-    },
-    { 
-      nombre: "incognita", 
-      recurso: "assets/sprites/operacion/incognita.png" 
     },
     { 
       nombre: "marco", 

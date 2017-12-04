@@ -1,4 +1,5 @@
 import { Boot, Preload, MainMenu, Game } from './estados'
+import 'css/main.scss'
 
 
 window.onload = () => {
