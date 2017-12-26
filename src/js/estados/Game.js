@@ -156,8 +156,12 @@ class Game {
   }
 
   crearQuipu() {
-    let sprite
+    let sprite, text
     const { manos } = settings.figuras
+    const style = { 
+      font: "50px Arial", 
+      fill: "#004caa"
+    }
 
     this.game.add.sprite(0, 120, "cuerda_principal")
 
@@ -169,6 +173,8 @@ class Game {
     for (let i = 1; i <= this.preguntas.length; i++) {
       sprite = this.game.add.sprite(410 - this.incremento * i, 5, manos[this.preguntas[i - 1].total].nombre)
       sprite.scale.setTo(.4, .4)
+
+      text = this.game.add.text(390 - this.incremento * i, 5, this.preguntas[i - 1].total, style)
 
       sprite = this.game.add.sprite(400 - this.incremento * i, 60, this.preguntas[i - 1].nombre)
       sprite.scale.setTo(.5, .5)
@@ -229,6 +235,13 @@ class Game {
       this.popup.addChild(sprite)
       this.popup.addChild(mano)
       this.popup.addChild(text)
+
+      if (index < (this.preguntas.length - 1)) {
+        let operacion = this.game.add.sprite(90 + (50 * index), 210, "mas")
+        operacion.scale.setTo(.2, .2)
+
+        this.popup.addChild(operacion)
+      }
 
       total += pregunta.total
     })
