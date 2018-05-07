@@ -157,13 +157,13 @@ class Game {
 
   crearQuipu() {
     let sprite, text
-    const { manos } = settings.figuras
+
     const style = { 
       font: "50px Arial", 
       fill: "#004caa"
     }
 
-    this.game.add.sprite(0, 120, "cuerda_principal")
+    this.game.add.sprite(0, 190, "cuerda_principal")
 
     this.incremento = this.preguntas.length === 1 ?
                 210 : this.preguntas.length === 2 ?
@@ -171,16 +171,89 @@ class Game {
                 110 : 90
 
     for (let i = 1; i <= this.preguntas.length; i++) {
-      sprite = this.game.add.sprite(410 - this.incremento * i, 5, manos[this.preguntas[i - 1].total].nombre)
-      sprite.scale.setTo(.4, .4)
+      // Agregamos los conjuntos de las frutas
+      switch(this.preguntas[i - 1].total) {
+        case 1: {
+          sprite = this.game.add.sprite(390 - this.incremento * i + 25, 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
 
-      text = this.game.add.text(390 - this.incremento * i, 5, this.preguntas[i - 1].total, style)
+          text = this.game.add.text(400 - this.incremento * i + 25, 100, this.preguntas[i - 1].total, style)
+          break;
+        }
+        case 2: {
+          sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
 
-      sprite = this.game.add.sprite(400 - this.incremento * i, 60, this.preguntas[i - 1].nombre)
-      sprite.scale.setTo(.5, .5)
+          text = this.game.add.text(400 - this.incremento * i + 25, 100, this.preguntas[i - 1].total, style)
+          break;
+        }
+        case 3: {
+          sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 25, 100, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
 
-      this.cuerdas[i - 1] = this.game.add.sprite(360 - this.incremento * i, 130, `cuerda_${this.preguntas[i - 1].color}`)
+          text = this.game.add.text(400 - this.incremento * i + 25, 50, this.preguntas[i - 1].total, style)
+          break;
+        }
+        case 4: {
+          sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i , 100, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 100, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+
+          text = this.game.add.text(400 - this.incremento * i + 25, 50, this.preguntas[i - 1].total, style)
+          break;
+        }
+        case 5: {
+          sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i , 100, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 100, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 25, 50, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+
+          text = this.game.add.text(400 - this.incremento * i + 25, 0, this.preguntas[i - 1].total, style)
+          break;
+        }
+        case 6: {
+          sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i , 100, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 100, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i , 50, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+          sprite = this.game.add.sprite(390 - this.incremento * i + 50, 50, this.preguntas[i - 1].nombre)
+          sprite.scale.setTo(.4, .4)
+
+          text = this.game.add.text(400 - this.incremento * i + 25, 0, this.preguntas[i - 1].total, style)
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+
+      // iniciamos la cuerda del quipu
+      this.cuerdas[i - 1] = this.game.add.sprite(360 - this.incremento * i, 200, `cuerda_${this.preguntas[i - 1].color}`)
       this.cuerdas[i - 1].frame = 0
+      this.cuerdas[i - 1].scale.setTo(1, .8)
     }
   }
 
@@ -208,7 +281,6 @@ class Game {
   }
 
   crearPopup() {
-    const { manos } = settings.figuras
     const style = { 
       font: "40px Arial", 
       fill: "#004caa"
@@ -227,17 +299,13 @@ class Game {
       let sprite = this.game.add.sprite(60 + 50 * index, 80, pregunta.nombre)
       sprite.scale.setTo(.3, .4)
 
-      let mano = this.game.add.sprite(60 + 50 * index, 140, manos[pregunta.total].nombre)
-      mano.scale.setTo(.3, .4)
-
-      let text = this.game.add.text(65 + 50 * index, 200, `${pregunta.total}`, style)
+      let text = this.game.add.text(65 + 50 * index, 140, `${pregunta.total}`, style)
 
       this.popup.addChild(sprite)
-      this.popup.addChild(mano)
       this.popup.addChild(text)
 
       if (index < (this.preguntas.length - 1)) {
-        let operacion = this.game.add.sprite(90 + (50 * index), 210, "mas")
+        let operacion = this.game.add.sprite(90 + (50 * index), 150, "mas")
         operacion.scale.setTo(.2, .2)
 
         this.popup.addChild(operacion)
