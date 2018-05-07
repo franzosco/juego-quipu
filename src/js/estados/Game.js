@@ -288,11 +288,11 @@ class Game {
 
     this.popup = this.game.add.sprite(100, 100, "popup")
 
-    let btnContinuar = this.game.make.button(180, 280, "siguiente", this.onContinuar)
-    btnContinuar.input.priorityID = 1
-    btnContinuar.scale.setTo(.4, .4)
+    //let btnContinuar = this.game.make.button(180, 280, "siguiente", this.onContinuar)
+    //btnContinuar.input.priorityID = 1
+    //btnContinuar.scale.setTo(.4, .4)
 
-    this.popup.addChild(btnContinuar)
+    //this.popup.addChild(btnContinuar)
 
     let total = 0
     this.preguntas.forEach((pregunta, index) => {
@@ -318,7 +318,8 @@ class Game {
     igual.scale.setTo(.4, .4)
     this.popup.addChild(igual)
 
-    this.popup.addChild(this.game.add.text(60 + 50 * this.preguntas.length + 50, 85, `${total}`, style))
+    let sprite_correcto = this.game.add.text(60 + 50 * this.preguntas.length + 50, 85, `?`, style)
+    this.popup.addChild(sprite_correcto)
 
     this.popup.scale.set(.1)
     this.popup.visible = false
@@ -326,6 +327,70 @@ class Game {
     // audio de error
     this.audio_error = this.game.add.audio("error")
     this.audio_correcto = this.game.add.audio("correcto")
+
+    //Agregamos alternativas
+    let rand
+    let alternativas_random = [0, 0, 0]
+    let alternativa_correcta = this.getRandomInt(0, 2)
+
+    for (let i = 0; i < 3; i++) {
+      if (alternativa_correcta === i) {
+        alternativas_random[alternativa_correcta] = total
+      } else {
+        rand = this.getRandomInt(1, 9)
+        while(alternativas_random.indexOf(rand) !== -1) {
+          rand = this.getRandomInt(1, 9)
+        }
+        alternativas_random[i] = rand
+      }
+    }
+
+    for (let i = 0; i < 3; i++) {
+      if (alternativa_correcta === i) {
+        alternativas_random[alternativa_correcta] = total
+      } else {
+        rand = this.getRandomInt(1, 9)
+        while(alternativas_random.indexOf(rand) !== -1) {
+          rand = this.getRandomInt(1, 9)
+        }
+        alternativas_random[i] = rand
+      }
+    }
+
+    let alternativaA = this.game.add.text(80, 220, `a)${alternativas_random[0]}`, style)
+    this.popup.addChild(alternativaA)
+    let alternativaB = this.game.add.text(180, 220, `b)${alternativas_random[1]}`, style)
+    this.popup.addChild(alternativaB)
+    let alternativaC = this.game.add.text(280, 220, `c)${alternativas_random[2]}`, style)
+    this.popup.addChild(alternativaC)
+
+    console.log(alternativas_random)
+
+    let alternativas_array = [alternativaA, alternativaB, alternativaC]
+    for (let i = 0; i < alternativas_array.length; i++) {
+      alternativas_array[i].inputEnabled = true
+
+      if (i === alternativa_correcta) {
+        alternativas_array[i].events.onInputDown.add(() => {
+          this.audio_correcto.play()
+          sprite_correcto.setText(total.toString())
+          setTimeout(() => {
+            sprite_correcto.setText('?')
+            this.onContinuar()
+          }, 1500)
+        }, this)
+      } else {
+        alternativas_array[i].events.onInputDown.add(() => {
+          this.audio_error.play()
+          sprite_correcto.setText(total.toString())
+          setTimeout(() => {
+            sprite_correcto.setText('?')
+            this.onContinuar()
+          }, 1500)
+        }, this)
+      }
+    }
+
   }
 
   soltarFigura() {
