@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded',  () => {
   game.state.add('Boot', new Boot());
   game.state.add('Preload', new Preload());
   game.state.add('MainMenu', new MainMenu());
+  game.state.add('Nivel 0', new Game(0));
   game.state.add('Nivel 1', new Game(1));
   game.state.add('Nivel 2', new Game(2));
   game.state.add('Nivel 3', new Game(3));

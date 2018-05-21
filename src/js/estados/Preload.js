@@ -1,8 +1,9 @@
 import bienvenida from 'assets/images/bienvenida.jpeg';
-import btnNivel1 from 'assets/sprites/buttons/btn_nivel_1.png';
-import btnNivel2 from 'assets/sprites/buttons/btn_nivel_1.png';
-import btnNivel3 from 'assets/sprites/buttons/btn_nivel_1.png';
+import btnNivel1 from 'assets/sprites/buttons/btn_nivel1.png';
+import btnNivel2 from 'assets/sprites/buttons/btn_nivel2.png';
+import btnNivel3 from 'assets/sprites/buttons/btn_nivel3.png';
 import btnCalcular from 'assets/sprites/buttons/calcular.png';
+import btnTutorial from 'assets/sprites/buttons/btn_tutorial.png';
 import cerdo from 'assets/sprites/animales/cerdo.png';
 import circulo from 'assets/sprites/geometricas/circulo.png';
 import conejo from 'assets/sprites/animales/conejo.png';
@@ -13,6 +14,7 @@ import cuerdaNaranja from 'assets/sprites/cuerdas/cuerda_naranja.png';
 import cuerdaPrincipal from 'assets/sprites/cuerdas/cuerda_principal.png';
 import cuerdaVerde from 'assets/sprites/cuerdas/cuerda_verde.png';
 import cuy from 'assets/sprites/animales/cuy.png';
+import ecenario0 from 'assets/images/ecenario0.jpg';
 import ecenario1 from 'assets/images/ecenario1.jpg';
 import ecenario2 from 'assets/images/ecenario2.jpg';
 import ecenario3 from 'assets/images/ecenario3.jpg';
@@ -72,6 +74,7 @@ class Preload {
 
     // cargamos los assets del juego
     this.load.image('bienvenida', bienvenida);
+    this.load.image('btnNivel0', btnTutorial);
     this.load.image('btnNivel1', btnNivel1);
     this.load.image('btnNivel2', btnNivel2);
     this.load.image('btnNivel3', btnNivel3);
@@ -82,6 +85,7 @@ class Preload {
     this.load.image('cuadrado', cuadrado);
     this.load.image('cuerdaPrincipal', cuerdaPrincipal);
     this.load.image('cuy', cuy);
+    this.load.image('ecenario0', ecenario0);
     this.load.image('ecenario1', ecenario1);
     this.load.image('ecenario2', ecenario2);
     this.load.image('ecenario3', ecenario3);

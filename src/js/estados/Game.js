@@ -1,3 +1,5 @@
+/*global Phaser*/
+
 const animales = [
     'cerdo',
     'conejo',
@@ -46,7 +48,6 @@ const animales = [
     ]
   };
 
-/*global Phaser*/
 
 class Game {
   constructor(nivel=1) {
@@ -71,6 +72,7 @@ class Game {
 
     this.crearCabecera = this.crearCabecera.bind(this);
     this.crearPregunta = this.crearPregunta.bind(this);
+    this.crearTutorial = this.crearTutorial.bind(this);
     this.crearQuipu = this.crearQuipu.bind(this);
     this.crearFiguras = this.crearFiguras.bind(this);
     this.onCalcular = this.onCalcular.bind(this);
@@ -102,15 +104,14 @@ class Game {
       if (contador < 9) {
         if (contador >= 5) {
           total = this.getRandomInt(1, 9 - contador);
-        } else {
+        }
+        else {
           total = this.getRandomInt(1, 5);
         }
         contador += total;
       }
 
-      return {
-        total: total
-      };
+      return {total: total};
     });
 
     // llenamos al azar las figuras de respuesta en la matriz de figuras
@@ -121,12 +122,14 @@ class Game {
         if (index === 0) {
           figura_temporal = niveles[this.nivel][this.getRandomInt(0, 3)];
         }
-
-      } else {
+      }
+      else {
         figura_temporal = niveles[this.nivel][this.getRandomInt(0, 3)];
 
         while (true) {
-          if (agregados.findIndex(nombre => nombre === figura_temporal.nombre) === -1) {
+          if (agregados.findIndex(nombre =>
+            nombre === figura_temporal.nombre
+          ) === -1) {
             agregados.push(figura_temporal.nombre);
             break;
           }
@@ -181,6 +184,176 @@ class Game {
       }
     }
 
+  }
+
+  crearTutorial() {
+    switch (this.pregunta_nro) {
+    case 1: {
+      this.respuestas = [0];
+
+      this.preguntas = [
+        {
+          'color': 'Naranja',
+          'nombre': 'manzana',
+          'total': 4
+        }
+      ];
+
+      this.figuras_matriz = [
+        ['manzana', 'pera', 'pera', 'manzana'],
+        ['naranja', 'uva', 'freza', 'uva'],
+        ['uva', 'naranja', 'manzana', 'zandia'],
+        ['platano', 'freza', 'manzana', 'zandia']
+      ];
+
+      break;
+    }
+    case 2: {
+      this.respuestas = [0, 0];
+
+      this.preguntas = [
+        {
+          'color': 'Naranja',
+          'nombre': 'naranja',
+          'total': 3
+        },
+        {
+          'color': 'Amarillo',
+          'nombre': 'platano',
+          'total': 5
+        }
+      ];
+
+      this.figuras_matriz = [
+        ['platano', 'platano', 'pera', 'pera'],
+        ['naranja', 'platano', 'freza', 'uva'],
+        ['uva', 'naranja', 'manzana', 'platano'],
+        ['platano', 'freza', 'naranja', 'zandia']
+      ];
+
+      break;
+    }
+    case 3: {
+      this.respuestas = [0, 0];
+
+      this.preguntas = [
+        {
+          'color': 'Naranja',
+          'nombre': 'cuadrado',
+          'total': 4
+        },
+        {
+          'color': 'Azul',
+          'nombre': 'circulo',
+          'total': 2
+        }
+      ];
+
+      this.figuras_matriz = [
+        ['cuadrado', 'rectangulo', 'circulo', 'triangulo'],
+        ['cuadrado', 'circulo', 'triangulo', 'trapecio'],
+        ['trapecio', 'rombo', 'triangulo', 'cuadrado'],
+        ['triangulo', 'trapecio', 'rombo', 'cuadrado']
+      ];
+
+      break;
+    }
+    case 4: {
+      this.respuestas = [0, 0, 0];
+
+      this.preguntas = [
+        {
+          'color': 'Naranja',
+          'nombre': 'cuadrado',
+          'total': 2
+        },
+        {
+          'color': 'Amarillo',
+          'nombre': 'triangulo',
+          'total': 3
+        },
+        {
+          'color': 'Azul',
+          'nombre': 'circulo',
+          'total': 4
+        }
+      ];
+
+      this.figuras_matriz = [
+        ['triangulo', 'rectangulo', 'triangulo', 'triangulo'],
+        ['cuadrado', 'circulo', 'circulo', 'trapecio'],
+        ['trapecio', 'trapecio', 'trapecio', 'cuadrado'],
+        ['circulo', 'rombo', 'rombo', 'circulo']
+      ];
+
+      break;
+    }
+    case 5: {
+      this.respuestas = [0, 0, 0];
+
+      this.preguntas = [
+        {
+          'nombre': 'gato',
+          'color': 'Azul',
+          'total': 1
+        },
+        {
+          'nombre': 'perro',
+          'color': 'Verde',
+          'total': 3
+        },
+        {
+          'nombre': 'pato',
+          'color': 'Amarillo',
+          'total': 2
+        }
+      ];
+
+      this.figuras_matriz = [
+        ['conejo', 'pato', 'perro', 'cerdo'],
+        ['gallina', 'conejo', 'conejo', 'perro'],
+        ['pato', 'cuy', 'cuy', 'cuy'],
+        ['gato', 'gallina', 'perro', 'vaca']
+      ];
+
+      break;
+    }
+    case 6: {
+      this.respuestas = [0, 0, 0, 0];
+
+      this.preguntas = [
+        {
+          'nombre': 'conejo',
+          'color': 'Naranja',
+          'total': 1
+        },
+        {
+          'nombre': 'gato',
+          'color': 'Azul',
+          'total': 4
+        },
+        {
+          'nombre': 'perro',
+          'color': 'Verde',
+          'total': 3
+        },
+        {
+          'nombre': 'pato',
+          'color': 'Amarillo',
+          'total': 1
+        }
+      ];
+
+      this.figuras_matriz = [
+        ['conejo', 'perro', 'gallina', 'cuy'],
+        ['gallina', 'cerdo', 'gato', 'perro'],
+        ['gato', 'perro', 'vaca', 'cuy'],
+        ['pato', 'perro', 'gato', 'gato']
+      ];
+
+      break;
+    }
+    }
   }
 
   crearQuipu() {
@@ -554,7 +727,7 @@ class Game {
   }
 
   onContinuar() {
-    if (this.pregunta_nro < 5) {
+    if (this.pregunta_nro < 6) {
       if (this.continuar) {
         this.pregunta_nro++;
 
@@ -574,7 +747,6 @@ class Game {
         ];
 
         this.game.state.start(`Nivel ${this.nivel}`, true, false);
-
       }
       else {
         this.respuestas = new Array(
@@ -624,7 +796,13 @@ class Game {
     // sonido bub
     this.bub = this.game.add.audio('bub');
 
-    this.crearPregunta();
+    if (this.nivel === 0) {
+      this.crearTutorial();
+    }
+    else {
+      this.crearPregunta();
+    }
+
     this.crearCabecera();
     this.crearQuipu();
     this.crearFiguras();

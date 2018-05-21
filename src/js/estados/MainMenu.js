@@ -19,12 +19,19 @@ class MainMenu {
     this.game.add.image(5, 5, 'logoUnamba');
     this.game.add.image(700, 5, 'logoEducacion');
 
-    this.menu = this.game.add.sprite(250, 150, 'marco');
-    this.menu.scale.setTo(.8, .8);
+    this.menu = this.game.add.sprite(230, 150, 'marco');
 
-    let btnNivel1 = this.game.make.button(
+    let btnNivel0 = this.game.make.button(
         100,
-        80,
+        60,
+        'btnNivel0',
+        () => {
+          this.game.state.start('Nivel 0');
+        }
+      ),
+      btnNivel1 = this.game.make.button(
+        100,
+        120,
         'btnNivel1',
         () => {
           this.game.state.start('Nivel 1');
@@ -32,7 +39,7 @@ class MainMenu {
       ),
       btnNivel2 = this.game.make.button(
         100,
-        170,
+        180,
         'btnNivel2',
         () => {
           this.game.state.start('Nivel 2');
@@ -40,17 +47,15 @@ class MainMenu {
       ),
       btnNivel3 = this.game.make.button(
         100,
-        260,
+        240,
         'btnNivel3',
         () => {
           this.game.state.start('Nivel 3');
         }
       );
 
-    btnNivel1.scale.setTo(1.2, 1.2);
-    btnNivel2.scale.setTo(1.2, 1.2);
-    btnNivel3.scale.setTo(1.2, 1.2);
 
+    this.menu.addChild(btnNivel0);
     this.menu.addChild(btnNivel1);
     this.menu.addChild(btnNivel2);
     this.menu.addChild(btnNivel3);
