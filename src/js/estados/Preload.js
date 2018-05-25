@@ -1,8 +1,9 @@
 import bienvenida from 'assets/images/bienvenida.jpeg';
+import btnAtras from 'assets/sprites/buttons/btn_atras.png';
 import btnNivel1 from 'assets/sprites/buttons/btn_nivel1.png';
 import btnNivel2 from 'assets/sprites/buttons/btn_nivel2.png';
 import btnNivel3 from 'assets/sprites/buttons/btn_nivel3.png';
-import btnCalcular from 'assets/sprites/buttons/calcular.png';
+import btnCalcular from 'assets/sprites/buttons/btn_calcular.png';
 import btnTutorial from 'assets/sprites/buttons/btn_tutorial.png';
 import cerdo from 'assets/sprites/animales/cerdo.png';
 import circulo from 'assets/sprites/geometricas/circulo.png';
@@ -74,6 +75,7 @@ class Preload {
 
     // cargamos los assets del juego
     this.load.image('bienvenida', bienvenida);
+    this.load.image('btnAtras', btnAtras);
     this.load.image('btnNivel0', btnTutorial);
     this.load.image('btnNivel1', btnNivel1);
     this.load.image('btnNivel2', btnNivel2);

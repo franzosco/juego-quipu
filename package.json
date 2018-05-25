@@ -1,6 +1,6 @@
 {
   "name": "Juego-Quipu",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Juego de Quipu - UNAMBA",
   "main": "./src/electron.js",
   "repository": {

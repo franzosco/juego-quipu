@@ -21,6 +21,11 @@ module.exports = {
       "error",
       "unix"
     ],
+    "no-constant-condition": [
+      "error", {
+        "checkLoops": false
+      }
+    ],
     "no-unused-vars": [
       "error",
       {"args": "none"}

@@ -75,6 +75,7 @@ class Game {
     this.crearTutorial = this.crearTutorial.bind(this);
     this.crearQuipu = this.crearQuipu.bind(this);
     this.crearFiguras = this.crearFiguras.bind(this);
+    this.crearPopup = this.crearPopup.bind(this);
     this.onCalcular = this.onCalcular.bind(this);
     this.onContinuar = this.onContinuar.bind(this);
     this.soltarFigura = this.soltarFigura.bind(this);
@@ -88,10 +89,11 @@ class Game {
 
   crearCabecera() {
     // boton calcular
-    let button = this.game.add.button(
-      600, 30, 'btnCalcular', this.onCalcular, 2, 1, 0
-    );
-    button.scale.setTo(.6, .6);
+    this.game.add.button(600, 30, 'btnCalcular', this.onCalcular, 2, 1, 0);
+
+    this.game.add.button(5, 5, 'btnAtras', () => {
+      this.game.state.start('MainMenu');
+    });
   }
 
   crearPregunta() {
@@ -115,7 +117,8 @@ class Game {
     });
 
     // llenamos al azar las figuras de respuesta en la matriz de figuras
-    let agregados = [], figura_temporal;
+    let agregados = [],
+      figura_temporal;
 
     this.preguntas = this.preguntas.map((pregunta, index) => {
       if  (this.nivel === 1) {
@@ -357,13 +360,6 @@ class Game {
   }
 
   crearQuipu() {
-    let sprite, text;
-
-    const style = {
-      font: '50px Arial',
-      fill: '#004caa'
-    };
-
     this.game.add.sprite(0, 190, 'cuerdaPrincipal');
 
     this.incremento = this.preguntas.length === 1 ?
@@ -371,134 +367,63 @@ class Game {
         150 : this.preguntas.length === 3 ?
           110 : 90;
 
-    for (let i = 1; i <= this.preguntas.length; i++) {
+    const style = {
+      font: '50px Arial',
+      fill: '#004caa'
+    };
+
+    let iteraciones,
+      sprite;
+
+    for (let i = 0; i < this.preguntas.length; i++) {
       // Agregamos los conjuntos de las frutas
-      switch(this.preguntas[i - 1].total) {
-      case 1: {
-        sprite = this.game.add.sprite(
-          390 - this.incremento * i + 25,
-          150,
-          this.preguntas[i - 1].nombre
-        );
-        sprite.scale.setTo(.6, .6);
 
-        text = this.game.add.text(
-          400 - this.incremento * i + 25,
-          100,
-          this.preguntas[i - 1].total, style
-        );
-        break;
+      iteraciones = parseInt(
+        this.preguntas[i].total / 2 +
+        this.preguntas[i].total % 2
+      );
+
+      for (let j = 0; j < iteraciones; j++) {
+        if (j === iteraciones - 1 && this.preguntas[i].total % 2 === 1) {
+          sprite = this.game.add.sprite(
+            390 - this.incremento * (i + 1) + 25,
+            150 - 50 * j,
+            this.preguntas[i].nombre
+          );
+          sprite.scale.setTo(.6, .6);
+        }
+        else {
+          sprite = this.game.add.sprite(
+            390 - this.incremento * (i + 1),
+            150 - 50 * j,
+            this.preguntas[i].nombre
+          );
+          sprite.scale.setTo(.6, .6);
+
+          sprite = this.game.add.sprite(
+            390 - this.incremento * (i + 1) + 50,
+            150 - 50 * j,
+            this.preguntas[i].nombre
+          );
+          sprite.scale.setTo(.6, .6);
+        }
       }
-      case 2: {
-        sprite = this.game.add.sprite(
-          390 - this.incremento * i,
-          150,
-          this.preguntas[i - 1].nombre
-        );
-        sprite.scale.setTo(.6, .6);
 
-        sprite = this.game.add.sprite(
-          390 - this.incremento * i + 50,
-          150,
-          this.preguntas[i - 1].nombre
-        );
-        sprite.scale.setTo(.6, .6);
-
-        text = this.game.add.text(
-          400 - this.incremento * i + 25,
-          100,
-          this.preguntas[i - 1].total, style
-        );
-        break;
-      }
-      case 3: {
-        sprite = this.game.add.sprite(
-          390 - this.incremento * i,
-          150,
-          this.preguntas[i - 1].nombre
-        );
-        sprite.scale.setTo(.6, .6);
-
-        sprite = this.game.add.sprite(
-          390 - this.incremento * i + 50,
-          150,
-          this.preguntas[i - 1].nombre
-        );
-        sprite.scale.setTo(.6, .6);
-
-        sprite = this.game.add.sprite(
-          390 - this.incremento * i + 25,
-          100,
-          this.preguntas[i - 1].nombre
-        );
-        sprite.scale.setTo(.6, .6);
-
-        text = this.game.add.text(
-          400 - this.incremento * i + 25,
-          50,
-          this.preguntas[i - 1].total,
-          style
-        );
-        break;
-      }
-      case 4: {
-        sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i , 100, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 50, 100, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-
-        text = this.game.add.text(400 - this.incremento * i + 25, 50, this.preguntas[i - 1].total, style)
-        break;
-      }
-      case 5: {
-        sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i , 100, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 50, 100, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 25, 50, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-
-        text = this.game.add.text(400 - this.incremento * i + 25, 0, this.preguntas[i - 1].total, style)
-        break;
-      }
-      case 6: {
-        sprite = this.game.add.sprite(390 - this.incremento * i , 150, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 50, 150, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i , 100, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 50, 100, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i , 50, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-        sprite = this.game.add.sprite(390 - this.incremento * i + 50, 50, this.preguntas[i - 1].nombre)
-        sprite.scale.setTo(.6, .6);
-
-        text = this.game.add.text(400 - this.incremento * i + 25, 0, this.preguntas[i - 1].total, style)
-        break;
-      }
-      default: {
-        break;
-      }
-      }
+      this.game.add.text(
+        390 + 10 - this.incremento * (i + 1) + 25,
+        150 - 50 * iteraciones,
+        this.preguntas[i].total,
+        style
+      );
 
       // iniciamos la cuerda del quipu
-      this.cuerdas[i - 1] = this.game.add.sprite(
-        360 - this.incremento * i,
+      this.cuerdas[i] = this.game.add.sprite(
+        360 - this.incremento * (i + 1),
         200,
-        `cuerda${this.preguntas[i - 1].color}`
+        `cuerda${this.preguntas[i].color}`
       );
-      this.cuerdas[i - 1].frame = 0;
-      this.cuerdas[i - 1].scale.setTo(1, .8);
+      this.cuerdas[i].frame = 0;
+      this.cuerdas[i].scale.setTo(1, .8);
     }
   }
 
@@ -523,52 +448,95 @@ class Game {
   }
 
   crearPopup() {
+    this.popup = this.game.add.sprite(100, 100, 'popup');
+
     const style = {
       font: '40px Arial',
       fill: '#004caa'
     };
 
-    this.popup = this.game.add.sprite(100, 100, 'popup');
+    let iteraciones,
+      sprite,
+      text,
+      total = 0;
 
-    let total = 0;
-    this.preguntas.forEach((pregunta, index) => {
-      let sprite = this.game.add.sprite(60 + 50 * index, 80, pregunta.nombre);
-      sprite.scale.setTo(.3, .4);
-
-      let text = this.game.add.text(
-        65 + 50 * index,
-        140,
-        `${pregunta.total}`,
-        style
+    for (let i = 0; i < this.preguntas.length; i++) {
+      iteraciones = parseInt(
+        this.preguntas[i].total / 2 +
+        this.preguntas[i].total % 2
       );
 
-      this.popup.addChild(sprite);
+      for (let j = 0; j < iteraciones; j++) {
+        if (j === iteraciones - 1 && this.preguntas[i].total % 2 === 1) {
+          sprite = this.game.add.sprite(
+            50 + 70 * i + 15,
+            150 - 30 * j,
+            this.preguntas[i].nombre
+          );
+          sprite.scale.setTo(.4, .4);
+          this.popup.addChild(sprite);
+        }
+        else {
+          sprite = this.game.add.sprite(
+            50 + 70 * i,
+            150 - 30 * j,
+            this.preguntas[i].nombre
+          );
+          sprite.scale.setTo(.4, .4);
+          this.popup.addChild(sprite);
+
+          sprite = this.game.add.sprite(
+            50 + 70 * i + 30,
+            150 - 30 * j,
+            this.preguntas[i].nombre
+          );
+          sprite.scale.setTo(.4, .4);
+          this.popup.addChild(sprite);
+        }
+      }
+
+      text = this.game.add.text(
+        40 + 70 * i + 25,
+        150 + 30,
+        this.preguntas[i].total,
+        style
+      );
       this.popup.addChild(text);
 
-      if (index < (this.preguntas.length - 1)) {
-        let operacion = this.game.add.sprite(90 + (50 * index), 150, 'mas');
+      if (i < (this.preguntas.length - 1)) {
+        let operacion = this.game.add.sprite(105 + (70 * i), 195, 'mas');
         operacion.scale.setTo(.2, .2);
         this.popup.addChild(operacion);
       }
 
-      total += pregunta.total;
-    });
+      total += this.preguntas[i].total;
+    }
 
     let igual = this.game.add.sprite(
-      60 + 50 * this.preguntas.length,
-      85,
+      70 + 55 * this.preguntas.length,
+      185,
       'igual'
     );
     igual.scale.setTo(.4, .4);
     this.popup.addChild(igual);
 
     let sprite_correcto = this.game.add.text(
-      60 + 50 * this.preguntas.length + 50,
-      85,
+      70 + 55 * this.preguntas.length + 50,
+      185,
       '?',
       style
     );
     this.popup.addChild(sprite_correcto);
+
+    let aspa = this.game.add.text(
+      0,
+      0,
+      'X',
+      style
+    );
+    this.popup.addChild(aspa);
+    aspa.visible = false;
+    this.aspa = aspa;
 
     this.popup.scale.set(.1);
     this.popup.visible = false;
@@ -609,19 +577,19 @@ class Game {
 
     let alternativaA = this.game.add.text(
         80,
-        220,
+        270,
         `a)${alternativas_random[0]}`,
         style
       ),
       alternativaB = this.game.add.text(
         180,
-        220,
+        270,
         `b)${alternativas_random[1]}`,
         style
       ),
       alternativaC = this.game.add.text(
         280,
-        220,
+        270,
         `c)${alternativas_random[2]}`,
         style
       );
@@ -642,6 +610,10 @@ class Game {
       if (i === alternativa_correcta) {
         alternativas_array[i].events.onInputDown.add(
           () => {
+            this.aspa.position.x = alternativas_array[i].position.x;
+            this.aspa.position.y = alternativas_array[i].position.y;
+            this.aspa.visible = true;
+
             this.audio_correcto.play();
             sprite_correcto.setText(total.toString());
 
@@ -659,6 +631,10 @@ class Game {
       else {
         alternativas_array[i].events.onInputDown.add(
           () => {
+            this.aspa.position.x = alternativas_array[i].position.x;
+            this.aspa.position.y = alternativas_array[i].position.y;
+            this.aspa.visible = true;
+
             this.audio_error.play();
             sprite_correcto.setText(total.toString());
 
@@ -684,6 +660,7 @@ class Game {
         420 - this.incremento * (i + 1) >= arguments[0].position.x &&
         arguments[0].key === this.preguntas[i].nombre
       ) {
+
         arguments[0].visible = false;
         this.figuras_invisibles.push(arguments[0]);
 
@@ -719,6 +696,8 @@ class Game {
       }
     }
 
+    this.aspa.visible = false;
+
     if (this.continuar) {
       this.audio_correcto.play();
     } else {
@@ -749,9 +728,13 @@ class Game {
         this.game.state.start(`Nivel ${this.nivel}`, true, false);
       }
       else {
-        this.respuestas = new Array(
-          this.nivel + (this.pregunta_nro > 2 ? 1 : 0)
-        ).fill(0);
+        if (this.nivel === 0) {
+          this.respuestas = [0];
+        }
+        else {
+          this.respuestas = new Array(
+            this.nivel + (this.pregunta_nro > 2 ? 1 : 0)).fill(0);
+        }
 
         this.popup.scale.set(0.1);
         this.popup.visible = false;

@@ -8,7 +8,7 @@ module.exports = merge(common, {
   'output': {
     'filename': '[name].bundle.js',
     'path': path.join(__dirname, 'build'),
-    'publicPath': '/'
+    'publicPath': './'
   },
   'plugins': [new UglifyJSPlugin()]
 });
