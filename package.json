@@ -1,5 +1,5 @@
 {
-  "name": "Juego-Quipu",
+  "name": "Juego Quipu",
   "version": "1.0.0",
   "description": "Juego de Quipu - UNAMBA",
   "main": "./src/electron.js",
@@ -10,11 +10,13 @@
   "scripts": {
     "devServer": "webpack-dev-server --mode development --config webpack.dev.js",
     "dev": "concurrently \"npm run devServer\" \"wait-on http://localhost:8080 && electron .\"",
-    "build": "webpack --mode production --config webpack.prod.js"
+    "build": "webpack --mode production --config webpack.prod.js",
+    "distWindows": "npm run build && electron-packager ./build --platform=win32 --arch=ia32 --out dist/"
   },
   "license": "MIT",
   "dependencies": {
     "electron": "^2.0.1",
+    "electron-is-dev": "^0.3.0",
     "phaser-ce": "^2.10.5"
   },
   "devDependencies": {
@@ -28,9 +30,7 @@
     "concurrently": "^3.5.1",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
-    "electron-is-dev": "^0.3.0",
-    "electron-windows-installer": "^1.7.8",
-    "electron-winstaller": "^2.6.4",
+    "electron-packager": "^12.1.0",
     "eslint": "^4.19.1",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
