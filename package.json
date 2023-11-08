@@ -1,5 +1,5 @@
 {
-  "name": "Juego Quipu",
+  "name": "juego-quipu",
   "version": "1.0.0",
   "description": "Juego de Quipu - UNAMBA",
   "main": "./src/electron.js",
