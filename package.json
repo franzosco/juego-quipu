@@ -10,6 +10,7 @@
   "scripts": {
     "devServer": "webpack-dev-server --mode development --config webpack.dev.js",
     "dev": "concurrently \"npm run devServer\" \"wait-on http://localhost:8080 && electron .\"",
+    "web": "webpack --mode production --config webpack.web.js",
     "build": "webpack --mode production --config webpack.prod.js",
     "distWindows": "npm run build && electron-packager ./build --platform=win32 --arch=ia32 --out dist/"
   },
