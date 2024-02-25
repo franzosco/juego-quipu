@@ -16,8 +16,8 @@ class MainMenu {
     background.height = this.game.height;
     background.width = this.game.width;
 
-    this.game.add.image(5, 5, 'logoUnamba');
-    this.game.add.image(700, 5, 'logoEducacion');
+    // this.game.add.image(5, 5, 'logoUnamba');
+    // this.game.add.image(700, 5, 'logoEducacion');
 
     this.menu = this.game.add.sprite(230, 150, 'marco');
 
